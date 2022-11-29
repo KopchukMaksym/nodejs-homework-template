@@ -22,7 +22,7 @@ const getContactById = async (contactId) => {
 const addContact = async (contact) => {
     const array = await listContacts();
     array.push(contact);
-    fs.writeFile(contactsPath, JSON.stringify(array));
+    fs.writeFile(contactsPath, JSON.stringify(array, null, 2));
     return contact;
 };
 
@@ -33,7 +33,7 @@ const removeContact = async (contactId) => {
     if (contact) {
         const index = array.filter((el) => el.id !== contactId);
         console.log(index);
-        fs.writeFile(contactsPath, JSON.stringify(index));
+        fs.writeFile(contactsPath, JSON.stringify(index, null, 2));
         return contactId;
     }
     return contact;
@@ -44,7 +44,7 @@ const updateContact = async (id, newContact) => {
     Object.keys(newContact).map((el) => {
         contact[el] = newContact[el];
     });
-    fs.writeFile(contactsPath, JSON.stringify(array));
+    fs.writeFile(contactsPath, JSON.stringify(array, null, 2));
     return contact;
 };
 
