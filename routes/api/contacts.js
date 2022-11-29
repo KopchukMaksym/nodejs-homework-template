@@ -24,10 +24,10 @@ router.get("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
         const contactById = await getContactById(id);
-        if (contactById) {
-            res.json(contactById);
+        if (!contactById) {
+            throw createError({ status: 404, message: "Not found" });
         }
-        throw createError({ status: 404, message: "Not found" });
+        res.json(contactById);
     } catch (error) {
         next(error);
     }
@@ -42,13 +42,12 @@ router.post("/", async (req, res, next) => {
                 status: 400,
                 message: validation.error.message,
             });
-        } else {
-            const array = await listContacts();
-            const id = array.length + 1;
-            req.body.id = `${id}`;
-            const newContact = await addContact(req.body);
-            res.status(201).json(newContact);
         }
+        const array = await listContacts();
+        const id = array.length + 1;
+        req.body.id = `${id}`;
+        const newContact = await addContact(req.body);
+        res.status(201).json(newContact);
     } catch (error) {
         next(error);
     }
@@ -57,9 +56,10 @@ router.post("/", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
     try {
         const deleteContact = await removeContact(req.params.id);
-        if (deleteContact) {
-            res.status(200).json({ message: "contact deleted" });
-        } else throw createError({ status: 404, message: "Not found" });
+        if (!deleteContact) {
+            throw createError({ status: 404, message: "Not found" });
+        }
+        res.status(200).json({ message: "contact deleted" });
     } catch (error) {
         next(error);
     }
@@ -71,14 +71,12 @@ router.put("/:id", async (req, res, next) => {
         const id = req.params.id;
         if (validation.error) {
             res.status(400).json({ message: validation.error.message });
-        } else {
-            const contact = await updateContact(id, req.body);
-            if (contact) {
-                res.status(200).json(contact);
-            } else {
-                throw createError({ status: 404, message: "Not found" });
-            }
         }
+        const contact = await updateContact(id, req.body);
+        if (!contact) {
+            throw createError({ status: 404, message: "Not found" });
+        }
+        res.status(200).json(contact);
     } catch (error) {
         next(error);
     }
