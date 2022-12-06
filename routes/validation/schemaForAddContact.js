@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 const schemaForAddContact = Joi.object({
-    name: Joi.string().alphanum().min(3).max(30).required(),
+    name: Joi.string().required(),
     email: Joi.string()
         .email({
             minDomainSegments: 2,
@@ -14,6 +14,7 @@ const schemaForAddContact = Joi.object({
             "string.pattern.base": `Phone number must have 10 digits.`,
         })
         .required(),
+    favorite: Joi.boolean(),
 });
 
 module.exports = schemaForAddContact;
