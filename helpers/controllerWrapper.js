@@ -3,6 +3,7 @@ function controllerWrapper(controller) {
         try {
             await controller(req, res);
         } catch (error) {
+            // throw createError({ status: 404, message: "Not Foyund" });
             next(error);
         }
     };
