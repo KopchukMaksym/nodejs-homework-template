@@ -1,4 +1,6 @@
 const express = require("express");
+const router = express.Router();
+
 const {
     getContactById,
     listContacts,
@@ -8,14 +10,14 @@ const {
     updateStatusContact,
 } = require("../../controllers/contacts");
 
-const controllerWrapper = require("../../helpers/controllerWrapper");
+const {
+    schemaForAddContact,
+    schemaForUpdateContact,
+    schemaForUpdateFavorite,
+} = require("../../schemas/contacts");
 
-const schemaForAddContact = require("../validation/schemaForAddContact");
-const schemaForUpdateContact = require("../validation/schemaForUpdateContact");
-const schemaForUpdateFavorite = require("../validation/schemaForUpdateFavorite");
-
+const { controllerWrapper } = require("../../helpers");
 const middlewares = require("../../middlewares");
-const router = express.Router();
 
 router.get("/", controllerWrapper(listContacts));
 

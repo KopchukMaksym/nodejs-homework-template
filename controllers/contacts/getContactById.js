@@ -1,11 +1,9 @@
-const createError = require("../../helpers/createError");
-const Contact = require("../../models/index");
+const Contact = require("../../models/contacts");
 
 const getContactById = async (req, res) => {
     const { id } = req.params;
 
     const result = await Contact.findById(id);
-    console.log("result", result);
     res.json(result);
 };
 

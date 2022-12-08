@@ -1,5 +1,5 @@
-const createError = require("../../helpers/createError");
-const Contact = require("../../models/index");
+const { createError } = require("../../helpers");
+const Contact = require("../../models/contacts");
 
 async function updateStatusContact(req, res) {
     if (Object.keys(req.body).length === 0) {
