@@ -8,10 +8,11 @@ async function updateStatusContact(req, res) {
             message: "missing field favorite",
         });
     }
-    const { id } = req.params;
+    const { id: contactId } = req.params;
+    const { _id: userId } = req.user;
     const { favorite } = req.body;
-    const result = await Contact.findByIdAndUpdate(
-        id,
+    const result = await Contact.findOneAndUpdate(
+        { _id: contactId, owner: userId },
         {
             favorite,
         },

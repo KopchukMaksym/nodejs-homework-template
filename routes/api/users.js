@@ -1,5 +1,10 @@
 const express = require("express");
-const { loginUser, registerUser } = require("../../controllers/users");
+const {
+    loginUser,
+    registerUser,
+    getCurrentUser,
+    logoutUser,
+} = require("../../controllers/users");
 const { controllerWrapper } = require("../../helpers");
 const router = express.Router();
 
@@ -11,10 +16,18 @@ router.post(
     middlewares.validateBody(schemaForUsers),
     controllerWrapper(registerUser)
 );
-router.get(
+router.post(
     "/login",
     middlewares.validateBody(schemaForUsers),
     controllerWrapper(loginUser)
+);
+
+router.get("/logout", middlewares.authenticate, controllerWrapper(logoutUser));
+
+router.get(
+    "/current",
+    middlewares.authenticate,
+    controllerWrapper(getCurrentUser)
 );
 
 module.exports = router;

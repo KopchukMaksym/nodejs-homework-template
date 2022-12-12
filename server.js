@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const app = require("./app");
 
 const { DB_HOST } = process.env;
-console.log(DB_HOST);
+
 async function start() {
     try {
         await mongoose.connect(DB_HOST);

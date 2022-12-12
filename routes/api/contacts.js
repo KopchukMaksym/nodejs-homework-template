@@ -19,26 +19,33 @@ const {
 const { controllerWrapper } = require("../../helpers");
 const middlewares = require("../../middlewares");
 
-router.get("/", controllerWrapper(listContacts));
+router.get("/", middlewares.authenticate, controllerWrapper(listContacts));
 
-router.get("/:id", controllerWrapper(getContactById));
+router.get("/:id", middlewares.authenticate, controllerWrapper(getContactById));
 
 router.post(
     "/",
+    middlewares.authenticate,
     middlewares.validateBody(schemaForAddContact),
     controllerWrapper(addContact)
 );
 
-router.delete("/:id", controllerWrapper(removeContact));
+router.delete(
+    "/:id",
+    middlewares.authenticate,
+    controllerWrapper(removeContact)
+);
 
 router.put(
     "/:id",
+    middlewares.authenticate,
     middlewares.validateBody(schemaForUpdateContact),
     controllerWrapper(updateContact)
 );
 
 router.patch(
     "/:id/favorite",
+    middlewares.authenticate,
     middlewares.validateBody(schemaForUpdateFavorite),
     controllerWrapper(updateStatusContact)
 );

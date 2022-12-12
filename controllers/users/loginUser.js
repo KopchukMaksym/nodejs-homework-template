@@ -1,6 +1,9 @@
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { createError } = require("../../helpers");
 const User = require("../../models/users");
+
+const { JWT_SECRET_KEY } = process.env;
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -20,9 +23,18 @@ const loginUser = async (req, res) => {
         throw createError({ status: 401, message: "Email or password wrong" });
     }
 
-    const token = "kansdlkjfnakdslnfkjadsnfk";
+    const payload = {
+        id: userIsExist._id,
+    };
 
-    res.json({ token });
+    const token = jwt.sign(payload, JWT_SECRET_KEY);
+    await User.findByIdAndUpdate(userIsExist._id, { token });
+
+    res.status(200).json({
+        token: token,
+        email: userIsExist.email,
+        subscription: userIsExist.subscription,
+    });
 };
 
 module.exports = loginUser;
