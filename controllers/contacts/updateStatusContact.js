@@ -2,12 +2,6 @@ const { createError } = require("../../helpers");
 const Contact = require("../../models/contacts");
 
 async function updateStatusContact(req, res) {
-    if (Object.keys(req.body).length === 0) {
-        throw createError({
-            status: 400,
-            message: "missing field favorite",
-        });
-    }
     const { id: contactId } = req.params;
     const { _id: userId } = req.user;
     const { favorite } = req.body;
