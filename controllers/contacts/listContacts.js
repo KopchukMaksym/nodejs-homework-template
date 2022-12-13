@@ -2,12 +2,16 @@ const Contact = require("../../models/contacts");
 
 const listContacts = async (req, res) => {
     const { _id } = req.user;
-    const { page = 1, limit = 20 } = req.query;
+    const { page = 1, limit = 20, favorite } = req.query;
 
     const skip = (parseInt(page) - 1) * parseInt(limit);
-
+    const searchParams = { owner: _id };
+    if (favorite) {
+        searchParams.favorite = favorite;
+    }
+    console.log(searchParams);
     const result = await Contact.find(
-        { owner: _id },
+        searchParams,
         {},
         {
             skip,
@@ -15,7 +19,7 @@ const listContacts = async (req, res) => {
         }
     ).populate("owner", "email subscription");
 
-    const totalDocs = await Contact.find({ owner: _id });
+    const totalDocs = await Contact.find(searchParams);
     const docsByCurrentPage = parseInt(page) * parseInt(limit);
     const remainingDocs = totalDocs.length - docsByCurrentPage;
     const prevPage = parseInt(page) - 1 <= 0 ? null : parseInt(page) - 1;
