@@ -4,6 +4,7 @@ const {
     registerUser,
     getCurrentUser,
     logoutUser,
+    updateAvatar,
 } = require("../../controllers/users");
 const { controllerWrapper } = require("../../helpers");
 const router = express.Router();
@@ -30,4 +31,10 @@ router.get(
     controllerWrapper(getCurrentUser)
 );
 
+router.patch(
+    "/avatars",
+    middlewares.authenticate,
+    middlewares.upload.single("avatar"),
+    controllerWrapper(updateAvatar)
+);
 module.exports = router;
