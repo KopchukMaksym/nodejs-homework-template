@@ -9,7 +9,6 @@ const listContacts = async (req, res) => {
     if (favorite) {
         searchParams.favorite = favorite;
     }
-    console.log(searchParams);
     const result = await Contact.find(
         searchParams,
         {},
