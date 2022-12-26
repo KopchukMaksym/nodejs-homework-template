@@ -5,12 +5,14 @@ const {
     getCurrentUser,
     logoutUser,
     updateAvatar,
+    verify,
+    verifyUser,
 } = require("../../controllers/users");
 const { controllerWrapper } = require("../../helpers");
 const router = express.Router();
 
 const middlewares = require("../../middlewares");
-const { schemaForUsers } = require("../../schemas/users");
+const { schemaForUsers, schemaForUsersVerify } = require("../../schemas/users");
 
 router.post(
     "/register",
@@ -21,6 +23,11 @@ router.post(
     "/login",
     middlewares.validateBody(schemaForUsers),
     controllerWrapper(loginUser)
+);
+router.post(
+    "/verify",
+    middlewares.validateBody(schemaForUsersVerify),
+    controllerWrapper(verifyUser)
 );
 
 router.get("/logout", middlewares.authenticate, controllerWrapper(logoutUser));
@@ -37,4 +44,6 @@ router.patch(
     middlewares.upload.single("avatar"),
     controllerWrapper(updateAvatar)
 );
+router.get("/verify/:verificationToken", controllerWrapper(verify));
+
 module.exports = router;
